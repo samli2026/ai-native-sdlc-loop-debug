@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env*)",
+      "Read(./secrets/**)"
+    ],
+    "allow": [
+      "Bash(git *)",
+      "Bash(make build)",
+      "Bash(make test)",
+      "Bash(make lint)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__deploy-.*__release",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/release-gate.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-tests.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

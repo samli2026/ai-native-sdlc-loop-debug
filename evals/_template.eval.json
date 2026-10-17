@@ -1,0 +1,13 @@
+{
+  "name": "<kebab-case-名称>",
+  "source": "<来源：合并的 PR / 事故 / 政策变更>",
+  "from": "<任务开始前的 commit SHA>",
+  "prompt": "<给 agent 的真实请求，和当时人说的一样>",
+  "may_change": ["<允许改的目录>"],
+  "checks": [
+    { "name": "tests pass", "run": "make test" },
+    { "name": "lint clean", "run": "make lint" },
+    { "name": "no existing test removed", "run": "! git diff HEAD -- tests | grep '^-[^-]'" },
+    { "name": "<行为断言>", "run": "<命令；失败必须非零退出>" }
+  ]
+}

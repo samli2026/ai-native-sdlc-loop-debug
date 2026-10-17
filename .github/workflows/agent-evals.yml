@@ -1,0 +1,25 @@
+name: Agent evals
+
+on:
+  pull_request:
+    paths: ["CLAUDE.md", ".claude/**", "evals/**"]
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 每条 eval 从历史 commit 开始
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Run eval suite
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: bash evals/run.sh
+      # 通过率下降时，这个 check 会失败；把它设为 required check 即可当门禁。
