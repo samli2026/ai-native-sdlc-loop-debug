@@ -9,6 +9,7 @@ on:
 
 jobs:
   evals:
+    if: github.event_name != 'pull_request' || vars.EVALS_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
