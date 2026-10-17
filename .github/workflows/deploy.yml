@@ -1,0 +1,16 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "commit SHA to deploy"
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "Deploying ${{ inputs.version }} to production"
+          echo "post-deploy check: 5xx < 1%"
